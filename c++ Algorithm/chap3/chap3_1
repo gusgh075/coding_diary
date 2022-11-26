@@ -2,21 +2,21 @@
 #include"ArrayStack.h"
 #include <iostream>
 #pragma warning(disable:4996)
-//ÁÖ¾îÁø ÆÄÀÏÀ» ÀĞ¾î °ıÈ£ ¸ÅÄªÀ» °Ë»ç¸¦ ÇÏ°í °á°ú¸¦ Ãâ·ÂÇÏ´Â ÇÔ¼ö
+//ì£¼ì–´ì§„ íŒŒì¼ì„ ì½ì–´ ê´„í˜¸ ë§¤ì¹­ì„ ê²€ì‚¬ë¥¼ í•˜ê³  ê²°ê³¼ë¥¼ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
 bool checkMatching(const char* filename) {
 	FILE* fp = fopen(filename, "r");
 	if (fp == NULL)
-		error("Error: ÆÄÀÏ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.\n");
-	//ÇÃ·¡±×º¯¼ö?
-	int nLine = 1;	//ÀĞÀº ¶óÀÎÀÇ °³¼ö
-	int nChar = 0;	//ÀĞÀº ¹®ÀÚ °³¼ö
+		error("Error: íŒŒì¼ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n");
+	//í”Œë˜ê·¸ë³€ìˆ˜?
+	int nLine = 1;	//ì½ì€ ë¼ì¸ì˜ ê°œìˆ˜
+	int nChar = 0;	//ì½ì€ ë¬¸ì ê°œìˆ˜
 	ArrayStack stack;
 	char ch;
 	int a = 0;
-	while ((ch = getc(fp)) != EOF) {	//EOF=End Of File, -1ÀÌ°í, ÆÄÀÏÀÇ ¸¶Áö¸·À» ÀÇ¹ÌÇÑ´Ù.
+	while ((ch = getc(fp)) != EOF) {	//EOF=End Of File, -1ì´ê³ , íŒŒì¼ì˜ ë§ˆì§€ë§‰ì„ ì˜ë¯¸í•œë‹¤.
 		if (ch == '\n')nLine++;
 		nChar++;
-		//ÀÛÀºµû¿ÈÇ¥ Ã³¸®ÄÚµå
+		//ì‘ì€ë”°ì˜´í‘œ ì²˜ë¦¬ì½”ë“œ
 		if (ch == '\'') {
 			while (true) {
 				ch = getc(fp);
@@ -30,10 +30,10 @@ bool checkMatching(const char* filename) {
 				}
 			}
 		}
-		//Å«µû¿ÈÇ¥ Ã³¸®ÄÚµå
+		//í°ë”°ì˜´í‘œ ì²˜ë¦¬ì½”ë“œ
 		else if (ch == '\"') {
 			while (true) {
-				ch=getc(fp);			//º¯¼ö°¡ ¾îµğ¿¡ ¿µÇâÀ» ³¢Ä¡´Â Áö »ı°¢ÇØº¸ÀÚ.
+				ch=getc(fp);			//ë³€ìˆ˜ê°€ ì–´ë””ì— ì˜í–¥ì„ ë¼ì¹˜ëŠ” ì§€ ìƒê°í•´ë³´ì.
 				nChar++;
 				if (ch == '\\') {
 					ch=getc(fp);
@@ -43,7 +43,7 @@ bool checkMatching(const char* filename) {
 					break;
 			}
 		}
-		//ÁÖ¼® Ã³¸®ÄÚµå
+		//ì£¼ì„ ì²˜ë¦¬ì½”ë“œ
 		else if (ch == '/') {
 			ch = getc(fp);
 			nChar++;
@@ -76,26 +76,26 @@ bool checkMatching(const char* filename) {
 
 		}
 		if (ch == '[' || ch == '(' || ch == '{')
-			stack.push(ch);			//push ¸Ç À§¿¡ Ç×¸ñ »ğÀÔ
+			stack.push(ch);			//push ë§¨ ìœ„ì— í•­ëª© ì‚½ì…
 		else if (ch == ']' || ch == ')' || ch == '}') {
-			int prev = stack.pop();	//pop ¸Ç À§ÀÇ Ç×¸ñÀ» ¹İÈ¯ÇÏ°í »èÁ¦, peekÀº ¹İÈ¯ÇÏµÇ »èÁ¦ÇÏÁö ¾Ê´Â´Ù.
+			int prev = stack.pop();	//pop ë§¨ ìœ„ì˜ í•­ëª©ì„ ë°˜í™˜í•˜ê³  ì‚­ì œ, peekì€ ë°˜í™˜í•˜ë˜ ì‚­ì œí•˜ì§€ ì•ŠëŠ”ë‹¤.
 			if ((ch == ']' && prev != '[')
 				|| (ch == ')' && prev != '(')
 				|| (ch == '}' && prev != '{')) {
 				break;
 			}
-			//breakÀº ¹İº¹¹®À» Å»ÃâÇÒ ¶§ »ç¿ëµÈ´Ù.
-		//¿©±â¼­ breakµÇ¸é stack¿¡´Â ¹®ÀÚ°¡ ³²¾ÆÀÖ°ÔµÇ¹Ç·Î °ıÈ£ °Ë»ç¿¡¼­ ½ÇÆĞÇÑ´Ù.
+			//breakì€ ë°˜ë³µë¬¸ì„ íƒˆì¶œí•  ë•Œ ì‚¬ìš©ëœë‹¤.
+		//ì—¬ê¸°ì„œ breakë˜ë©´ stackì—ëŠ” ë¬¸ìê°€ ë‚¨ì•„ìˆê²Œë˜ë¯€ë¡œ ê´„í˜¸ ê²€ì‚¬ì—ì„œ ì‹¤íŒ¨í•œë‹¤.
 		}
 
 
 	}
 	fclose(fp);
-	printf("[%s] ÆÄÀÏ °Ë»ç°á°ú:\n", filename);
+	printf("[%s] íŒŒì¼ ê²€ì‚¬ê²°ê³¼:\n", filename);
 	if (!stack.isEmpty())
-		printf("Error: ¹®Á¦¹ß°ß!(¶óÀÎ¼ö=%d, ¹®ÀÚ¼ö=%d)\n\n", nLine, nChar);
+		printf("Error: ë¬¸ì œë°œê²¬!(ë¼ì¸ìˆ˜=%d, ë¬¸ììˆ˜=%d)\n\n", nLine, nChar);
 	else
-		printf(" OK: °ıÈ£´İ±âÁ¤»ó(¶óÀÎ¼ö=%d, ¹®ÀÚ¼ö=%d)\n\n", nLine, nChar);
+		printf(" OK: ê´„í˜¸ë‹«ê¸°ì •ìƒ(ë¼ì¸ìˆ˜=%d, ë¬¸ììˆ˜=%d)\n\n", nLine, nChar);
 	return stack.isEmpty();
 }
 
